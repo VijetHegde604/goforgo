@@ -1,0 +1,25 @@
+[exercise]
+name = "imports"
+category = "01_basics"
+order = 5
+difficulty = 1
+estimated_time = "3m"
+
+[description]
+title = "Import Statements"
+summary = "Learn how to import packages in Go"
+learning_objectives = [
+  "Understand import statements",
+  "Learn about the fmt package",
+  "Practice using imported functions"
+]
+
+[validation]
+mode = "run"
+expected_output = "Learning about imports!"
+timeout = "10s"
+
+[hints]
+level_1 = "Open exercises/imports.go — the code uses fmt.Println but never imports the fmt package."
+level_2 = "Add 'import \"fmt\"' between the package declaration and func main()."
+level_3 = "The file should read: package main, then import \"fmt\", then func main() with the Println call inside."

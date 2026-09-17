@@ -1,0 +1,70 @@
+[exercise]
+name = "http_server"
+order = 1
+category = "16_http"
+difficulty = 3
+estimated_time = "25m"
+go_version = "1.16+"
+
+[description]
+title = "HTTP Server"
+summary = "Build HTTP servers with routing, middleware, and request handling"
+learning_objectives = [
+  "Create HTTP servers with custom multiplexers",
+  "Handle different HTTP methods and routes",
+  "Implement middleware for logging and authentication",
+  "Process HTTP requests and send appropriate responses",
+  "Configure server timeouts and graceful shutdown"
+]
+
+[validation]
+mode = "universal"
+timeout = "60s"
+
+[[validation.rules]]
+type = "http_routes"
+name = "api_endpoints"
+[validation.rules.config]
+base_url = "http://localhost:8080"
+[[validation.rules.config.routes]]
+method = "GET"
+path = "/api/users"
+expect_status = 200
+expect_json = true
+[[validation.rules.config.routes]]
+method = "POST"
+path = "/api/users"
+body = "test_user.json"
+expect_status = 201
+[[validation.rules.config.routes]]
+method = "GET"
+path = "/api/users/1"
+expect_status = 200
+expect_json = true
+[[validation.rules.config.routes]]
+method = "GET"
+path = "/api/health"
+expect_status = 200
+expect_body = "healthy"
+[[validation.rules.config.routes]]
+method = "GET"
+path = "/static/test.txt"
+expect_status = 200
+
+[[validation.rules]]
+type = "process"
+name = "server_startup"
+[validation.rules.config]
+monitor_duration = "10s"
+expected_processes = ["http_server"]
+check_port = 8080
+graceful_shutdown = true
+
+[hints]
+level_1 = "Use http.NewServeMux() for routing and http.ListenAndServe() to start server"
+level_2 = "Middleware wraps handlers: func middleware(next http.Handler) http.Handler"
+level_3 = "Set timeouts in http.Server struct for production readiness"
+
+[metadata]
+tags = ["http", "server", "routing", "middleware", "web"]
+related_exercises = ["16_http/http_client.go", "22_net/http_client_advanced.go"]

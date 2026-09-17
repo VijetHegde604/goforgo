@@ -1,0 +1,63 @@
+[exercise]
+name = "sql_basics"
+order = 1
+category = "33_databases"
+difficulty = 3
+estimated_time = "25m"
+
+[description]
+title = "SQL Database Operations"
+summary = "Learn Go's database/sql package for CRUD operations, transactions, and database connection management"
+learning_objectives = [
+  "Connect to SQLite database using database/sql",
+  "Create database schema and tables",
+  "Perform CRUD operations (Create, Read, Update, Delete)",
+  "Use prepared statements for safe SQL execution",
+  "Handle database transactions with rollback capability",
+  "Process query results and handle database errors"
+]
+
+[validation]
+mode = "universal"
+timeout = "90s"
+
+[[validation.services]]
+type = "postgresql"
+name = "main_db"
+version = "15"
+fixtures = ["schema.sql", "seed_data.sql"]
+[validation.services.config]
+POSTGRES_DB = "testdb"
+POSTGRES_USER = "testuser"
+POSTGRES_PASSWORD = "testpass"
+
+[[validation.rules]]
+type = "database"
+name = "schema_creation"
+[validation.rules.config]
+service = "main_db"
+check_tables = ["users", "products"]
+check_row_counts = true
+
+[[validation.rules]]
+type = "database"
+name = "crud_operations"
+[validation.rules.config]
+service = "main_db"
+test_insert = true
+test_select = true
+test_update = true
+test_delete = true
+
+[[validation.rules]]
+type = "database"
+name = "transaction_handling"
+[validation.rules.config]
+service = "main_db"
+test_rollback = true
+test_commit = true
+
+[hints]
+level_1 = "Import database/sql and SQLite driver (_ \"github.com/mattn/go-sqlite3\"). Use sql.Open() to connect"
+level_2 = "Use db.Prepare() for repeated queries, db.Exec() for DDL/DML, db.Query() for SELECT statements"
+level_3 = "Handle transactions with db.Begin(), tx.Commit(), and tx.Rollback() for atomicity"

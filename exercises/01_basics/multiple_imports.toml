@@ -1,0 +1,24 @@
+[exercise]
+name = "multiple_imports"
+category = "01_basics"
+order = 6
+difficulty = 2
+estimated_time = "4m"
+
+[description]
+title = "Multiple Imports"
+summary = "Learn how to import multiple packages efficiently"
+learning_objectives = [
+  "Understand grouped import syntax",
+  "Learn to import multiple packages at once",
+  "Practice using functions from different packages"
+]
+
+[validation]
+mode = "run"
+timeout = "10s"
+
+[hints]
+level_1 = "Open exercises/multiple_imports.go — you need to add an import block with both packages."
+level_2 = "Group imports with parentheses: import ( \"fmt\" and \"time\" on separate lines )."
+level_3 = "Add this after package main: import (\n\t\"fmt\"\n\t\"time\"\n)"

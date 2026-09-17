@@ -1,0 +1,11 @@
+# GoForGo Configuration
+version = "1.0"
+
+[user]
+auto_advance = true
+show_hints = true
+theme = "default"
+
+[progress]
+current_exercise = ""
+completed_exercises = []

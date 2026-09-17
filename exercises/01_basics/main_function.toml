@@ -1,0 +1,25 @@
+[exercise]
+name = "main_function"
+category = "01_basics"
+order = 3
+difficulty = 2
+estimated_time = "5m"
+
+[description]
+title = "The Main Function"
+summary = "Learn about Go's main function as the program entry point. Open exercises/01_basics/main_function.go and follow the TODO comments."
+learning_objectives = [
+  "Understand the main function's role",
+  "Learn that code outside functions won't compile",
+  "Practice function declaration syntax"
+]
+
+[validation]
+mode = "run"
+expected_output = "This is the main function!"
+timeout = "10s"
+
+[hints]
+level_1 = "Open main_function.go — the fmt.Println call is outside any function, which Go doesn't allow."
+level_2 = "Every Go program needs a func main() { } block. Code must live inside functions."
+level_3 = "Wrap the fmt.Println line in: func main() { fmt.Println(\"This is the main function!\") }"

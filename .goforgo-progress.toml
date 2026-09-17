@@ -1,0 +1,33 @@
+current_exercise = "function_definition"
+last_updated = 2026-09-17T20:28:04.293162565+05:30
+
+[completed_exercises]
+  break_continue = true
+  comments = true
+  constants = true
+  defer_statements = true
+  for_loops = true
+  formatting = true
+  go_types = true
+  goto_labels = true
+  hello = true
+  if_statements = true
+  imports = true
+  main_function = true
+  multiple_declaration = true
+  multiple_imports = true
+  package = true
+  panic_recover = true
+  print_functions = true
+  program_structure = true
+  range_loops = true
+  select_statements = true
+  semicolons = true
+  short_declaration = true
+  switch_statements = true
+  type_conversion = true
+  type_inference = true
+  type_switches = true
+  var_declaration = true
+  variable_scope = true
+  zero_values = true

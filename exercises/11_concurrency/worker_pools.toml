@@ -1,0 +1,65 @@
+[exercise]
+name = "worker_pools"
+order = 5
+category = "11_concurrency"
+difficulty = 4
+estimated_time = "25m"
+go_version = "1.16+"
+
+[description]
+title = "Worker Pool Patterns"
+summary = "Learn how to implement worker pools for concurrent task processing"
+learning_objectives = [
+  "Create basic worker pools with job queues",
+  "Implement priority-based worker pools",
+  "Handle graceful shutdown of worker pools",
+  "Use context for worker pool cancellation",
+  "Collect and process results from workers"
+]
+
+[validation]
+mode = "universal"
+timeout = "45s"
+
+[[validation.rules]]
+type = "concurrency"
+name = "worker_pool_behavior"
+[validation.rules.config]
+test_duration = "15s"
+race_detection = true
+[validation.rules.config.expected_goroutines]
+min = 5
+max = 20
+[validation.rules.config.job_throughput]
+min_jobs_per_second = 100
+[validation.rules.config.memory_growth]
+max_mb_increase = 10
+
+[[validation.rules]]
+type = "process"
+name = "graceful_shutdown"
+[validation.rules.config]
+shutdown_timeout = "5s"
+expect_clean_exit = true
+check_resource_cleanup = true
+
+[[validation.rules]]
+type = "logs"
+name = "worker_activity"
+[validation.rules.config]
+expected_patterns = [
+    "Worker \\d+ started",
+    "Worker \\d+ processing job", 
+    "Worker pool shutdown",
+    "All workers completed"
+]
+log_level = "info"
+
+[hints]
+level_1 = "Worker pool: job channel + result channel + worker goroutines"
+level_2 = "Priority: separate high/low priority job channels"
+level_3 = "Shutdown: close job channel, wait for workers, cancel context"
+
+[metadata]
+tags = ["concurrency", "worker-pools", "job-queues", "patterns"]
+related_exercises = ["11_concurrency/goroutines_basics.go", "11_concurrency/context_usage.go"]

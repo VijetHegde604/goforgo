@@ -1,0 +1,72 @@
+[exercise]
+name = "circuit_breaker"
+order = 2
+category = "32_microservices"
+difficulty = 5
+estimated_time = "40m"
+
+[description]
+title = "Circuit Breaker Pattern"
+summary = "Implement circuit breaker pattern for fault tolerance and resilience in microservice communication"
+learning_objectives = [
+  "Understand circuit breaker pattern for fault tolerance",
+  "Implement three circuit breaker states: closed, open, half-open",
+  "Create failure counting and timeout mechanisms",
+  "Handle service degradation gracefully",
+  "Build resilient microservice communication patterns",
+  "Implement thread-safe state management with mutexes"
+]
+
+[validation]
+mode = "universal"
+timeout = "120s"
+
+[[validation.services]]
+type = "http_mock"
+name = "upstream_service"
+version = "latest"
+[validation.services.config]
+port = 9090
+failure_rate = 0.5
+failure_after = "15s"
+
+[[validation.rules]]
+type = "process"
+name = "circuit_breaker_states"
+[validation.rules.config]
+monitor_duration = "60s"
+expected_states = ["CLOSED", "OPEN", "HALF_OPEN"]
+state_transitions = true
+concurrent_requests = 50
+
+[[validation.rules]]
+type = "concurrency"
+name = "thread_safety"
+[validation.rules.config]
+concurrent_requests = 100
+duration = "30s"
+race_detection = true
+expect_no_races = true
+
+[[validation.rules]]
+type = "metrics"
+name = "circuit_breaker_metrics"
+[validation.rules.config]
+endpoint = "http://localhost:8080/metrics"
+[[validation.rules.config.metrics]]
+name = "circuit_breaker_requests_total"
+type = "counter"
+min_value = 50
+[[validation.rules.config.metrics]]
+name = "circuit_breaker_failures_total"
+type = "counter"
+min_value = 10
+[[validation.rules.config.metrics]]
+name = "circuit_breaker_state"
+type = "gauge"
+possible_values = [0, 1, 2]
+
+[hints]
+level_1 = "Circuit breaker has 3 states: CLOSED (normal), OPEN (failing), HALF-OPEN (testing recovery)"
+level_2 = "Track failure count and time of last failure, transition to OPEN when maxFailures exceeded"
+level_3 = "In OPEN state, reject calls immediately. After timeout, transition to HALF-OPEN for testing"
