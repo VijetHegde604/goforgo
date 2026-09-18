@@ -2,23 +2,29 @@ package main
 
 import "fmt"
 
-// TODO: Define a function called 'sum' that takes a variadic parameter of integers
-// The function should return the sum of all the numbers passed to it
-// Use the syntax: func sum(numbers ...int) int
+func sum(numbers ...int) int {
+	sum := 0
+	for num := range numbers {
+		sum += num
+	}
+	return sum
+}
 
-// TODO: Define a function called 'printAll' that takes a variadic parameter of strings
-// The function should print each string on a separate line with a number prefix
-// Example output: "1: hello", "2: world"
+func printAll(words ...string) {
+	for index, word := range words {
+		fmt.Printf("%d:%s", index, word)
+	}
+}
 
 func main() {
-	// TODO: Call sum with no arguments and print the result
-	
-	// TODO: Call sum with 1, 2, 3 and print the result
-	
-	// TODO: Call sum with 10, 20, 30, 40, 50 and print the result
-	
-	// TODO: Create a slice of integers: []int{1, 2, 3, 4, 5}
-	// Call sum with the slice using the spread operator (...) and print the result
-	
-	// TODO: Call printAll with "apple", "banana", "cherry"
+	sum()
+
+	sum(1, 2, 3)
+
+	sum(10, 20, 30, 40, 50)
+
+	nums := []int{1, 2, 3, 4, 5}
+	sum(nums...)
+
+	printAll("apple", "banana", "cherry")
 }

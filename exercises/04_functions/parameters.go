@@ -2,18 +2,19 @@ package main
 
 import "fmt"
 
-// TODO: Define a function called 'greetPerson' that takes a string parameter called 'name'
-// The function should print "Hello, [name]!" where [name] is the parameter value
+func greetPerson(name string) {
+	fmt.Printf("Hello, %s!", name)
+}
 
-// TODO: Define a function called 'add' that takes two int parameters and prints their sum
-// The function should print "The sum is: [result]"
-
+func add(a, b int) {
+	fmt.Println("The sum is: ", a+b)
+}
 func main() {
-	// TODO: Call greetPerson with the name "Alice"
-	
-	// TODO: Call greetPerson with the name "Bob"
-	
-	// TODO: Call add with the numbers 5 and 3
-	
-	// TODO: Call add with the numbers 10 and 7
+	greetPerson("Alice")
+
+	greetPerson("Bob")
+
+	add(5, 3)
+
+	add(10, 7)
 }

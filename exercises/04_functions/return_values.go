@@ -2,22 +2,28 @@ package main
 
 import "fmt"
 
-// TODO: Define a function called 'double' that takes an int parameter and returns an int
-// The function should return the parameter multiplied by 2
+func double(value int) int {
+	return value * 2
+}
 
-// TODO: Define a function called 'getGreeting' that takes a string parameter 'name'
-// and returns a string greeting like "Hello, [name]!"
+func getGreeting(name string) string {
+	return fmt.Sprintf("Hello, %s!", name)
+}
 
-// TODO: Define a function called 'divide' that takes two float64 parameters (a, b)
-// and returns two values: the result (float64) and a success flag (bool)
-// Return (0.0, false) if b is zero, otherwise return (a/b, true)
+func divide(a, b float64) (float64, bool) {
+	if b == 0 {
+		return 0.0, false
+	} else {
+		return a / b, true
+	}
+}
 
 func main() {
-	// TODO: Call double with 5 and print the result
-	
-	// TODO: Call getGreeting with "World" and print the result
-	
-	// TODO: Call divide with 10.0 and 2.0, capture both return values and print them
-	
-	// TODO: Call divide with 10.0 and 0.0, capture both return values and print them
+	fmt.Println(double(5))
+
+	fmt.Println(getGreeting("World"))
+
+	fmt.Println(divide(10.0, 2.0))
+
+	fmt.Println(divide(10.0, 0.0))
 }

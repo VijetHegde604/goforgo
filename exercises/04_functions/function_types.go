@@ -2,27 +2,28 @@ package main
 
 import "fmt"
 
-// TODO: Define a function called 'add' that takes two integers and returns their sum
+func add(a, b int) int {
+	return a + b
+}
 
-// TODO: Define a function called 'multiply' that takes two integers and returns their product
+func multiply(a, b int) int {
+	return a * b
+}
 
-// TODO: Define a function called 'operate' that takes three parameters:
-// - a: int
-// - b: int  
-// - operation: a function that takes two ints and returns an int
-// The function should call the operation function with a and b and return the result
+func operate(a int, b int, operation func(int, int) int) int {
+	return operation(a, b)
+}
 
 func main() {
-	// TODO: Create a variable called 'mathFunc' with the type that matches add and multiply
-	// Assign the add function to it
-	
-	// TODO: Call mathFunc with 5 and 3, print the result
-	
-	// TODO: Assign the multiply function to mathFunc
-	
-	// TODO: Call mathFunc with 5 and 3, print the result
-	
-	// TODO: Call operate with 10, 4, and the add function, print the result
-	
-	// TODO: Call operate with 10, 4, and the multiply function, print the result
+	var mathFunc func(int, int) int = add
+
+	mathFunc(5, 3)
+
+	mathFunc = multiply
+
+	fmt.Println(mathFunc(5, 3))
+
+	fmt.Println(operate(10, 4, add))
+
+	fmt.Println(operate(10, 4, multiply))
 }
