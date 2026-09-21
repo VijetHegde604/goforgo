@@ -1,7 +1,11 @@
-current_exercise = "array_basics"
-last_updated = 2026-09-18T22:39:46.643768006+05:30
+current_exercise = "map_basics"
+last_updated = 2026-09-21T19:11:50.921825949+05:30
 
 [completed_exercises]
+  array_basics = true
+  array_iteration = true
+  array_searching = true
+  array_sorting = true
   break_continue = true
   closures = true
   comments = true
@@ -17,6 +21,7 @@ last_updated = 2026-09-18T22:39:46.643768006+05:30
   if_statements = true
   imports = true
   main_function = true
+  multidimensional_arrays = true
   multiple_declaration = true
   multiple_imports = true
   named_returns = true
@@ -31,6 +36,12 @@ last_updated = 2026-09-18T22:39:46.643768006+05:30
   select_statements = true
   semicolons = true
   short_declaration = true
+  slice_append = true
+  slice_basics = true
+  slice_capacity = true
+  slice_copy = true
+  slice_sorting_custom = true
+  slice_tricks = true
   switch_statements = true
   type_conversion = true
   type_inference = true
