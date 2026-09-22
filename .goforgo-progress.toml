@@ -1,5 +1,5 @@
-current_exercise = "map_basics"
-last_updated = 2026-09-21T19:11:50.921825949+05:30
+current_exercise = "struct_basics"
+last_updated = 2026-09-22T21:47:37.650639782+05:30
 
 [completed_exercises]
   array_basics = true
@@ -21,6 +21,11 @@ last_updated = 2026-09-21T19:11:50.921825949+05:30
   if_statements = true
   imports = true
   main_function = true
+  map_advanced = true
+  map_basics = true
+  map_iteration = true
+  map_patterns = true
+  map_performance = true
   multidimensional_arrays = true
   multiple_declaration = true
   multiple_imports = true
