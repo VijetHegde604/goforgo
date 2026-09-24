@@ -1,49 +1,40 @@
-// struct_embedding.go
-// Learn advanced struct embedding patterns and composition
-
 package main
 
 import "fmt"
 
-// TODO: Define a base Engine struct
 type Engine struct {
 	Horsepower int
 	Type       string
 }
 
-// TODO: Add a Start method to Engine
 func (e Engine) Start() {
 	fmt.Printf("Starting %s engine with %d HP\n", e.Type, e.Horsepower)
 }
 
-// TODO: Add a Stop method to Engine
 func (e Engine) Stop() {
 	fmt.Printf("Stopping %s engine\n", e.Type)
 }
 
-// TODO: Define a Car struct that embeds Engine
 type Car struct {
 	Make  string
 	Model string
 	Year  int
-	// Embed Engine here
+	Engine
 }
 
-// TODO: Add a Drive method to Car
 func (c Car) Drive() {
 	fmt.Printf("Driving %d %s %s\n", c.Year, c.Make, c.Model)
 }
 
-// TODO: Override the Start method for Car (method promotion)
+// Car's Start overrides the promoted Engine.Start method.
 func (c Car) Start() {
 	fmt.Printf("Starting %d %s %s\n", c.Year, c.Make, c.Model)
-	// Call the embedded Engine's Start method
+	c.Engine.Start()
 }
 
-// TODO: Define multiple embedded structs
 type GPS struct {
-	Brand    string
-	HasMaps  bool
+	Brand   string
+	HasMaps bool
 }
 
 func (g GPS) Navigate(destination string) {
@@ -51,7 +42,7 @@ func (g GPS) Navigate(destination string) {
 }
 
 type Radio struct {
-	Brand     string
+	Brand        string
 	HasBluetooth bool
 }
 
@@ -59,15 +50,13 @@ func (r Radio) PlayMusic() {
 	fmt.Printf("Playing music on %s radio\n", r.Brand)
 }
 
-// TODO: Define a LuxuryCar that embeds multiple structs
 type LuxuryCar struct {
-	// Embed Car
-	// Embed GPS  
-	// Embed Radio
 	LeatherSeats bool
+	Car
+	GPS
+	Radio
 }
 
-// TODO: Define structs with name conflicts
 type Person struct {
 	Name string
 	Age  int
@@ -78,49 +67,72 @@ type Company struct {
 	Employees int
 }
 
-// TODO: Define Employee that embeds both Person and Company
-// This will create a name conflict for the Name field
+// Person and Company both have a Name field,
+// so Name must be accessed explicitly through either one.
 type Employee struct {
 	ID       int
 	Position string
-	// Embed Person
-	// Embed Company
+	Person
+	Company
 }
 
 func main() {
-	// TODO: Create a Car and test method promotion
-	car := // Create Car with Make: "Toyota", Model: "Camry", Year: 2023, Engine with Horsepower: 200, Type: "V6"
-	
-	// TODO: Call methods - both Car's and Engine's
-	car.Start() // This calls Car's Start method
-	// Call the embedded Engine's Start method explicitly
+	car := Car{
+		Make:  "Toyota",
+		Model: "Camry",
+		Year:  2023,
+		Engine: Engine{
+			Horsepower: 200,
+			Type:       "V6",
+		},
+	}
+
+	car.Start()
+	car.Engine.Start()
 	car.Drive()
-	// Call Engine's Stop method through promotion
-	
+	car.Stop()
+
 	fmt.Println("---")
-	
-	// TODO: Create a LuxuryCar with all embedded structs
-	luxuryCar := // Create LuxuryCar with all fields populated
-	
-	// TODO: Call methods from all embedded structs
+
+	luxuryCar := LuxuryCar{
+		LeatherSeats: true,
+		Car:          car,
+		GPS: GPS{
+			Brand:   "Garmin",
+			HasMaps: true,
+		},
+		Radio: Radio{
+			Brand:        "Sony",
+			HasBluetooth: true,
+		},
+	}
+
 	luxuryCar.Start()
 	luxuryCar.Drive()
-	// Navigate to "Downtown"
-	// Play music
-	
+	luxuryCar.Navigate("Downtown")
+	luxuryCar.Radio.PlayMusic()
+
 	fmt.Println("---")
-	
-	// TODO: Handle name conflicts in Employee
-	emp := // Create Employee with conflicting Name fields
-	
-	// TODO: Access fields with conflicts - must be explicit
-	fmt.Printf("Employee: %s (ID: %d)\n", /* access Person's Name */, emp.ID)
-	fmt.Printf("Works at: %s\n", /* access Company's Name */)
+
+	emp := Employee{
+		ID:       1,
+		Position: "Software Engineer",
+		Person: Person{
+			Name: "Vijet",
+			Age:  21,
+		},
+		Company: Company{
+			Name:      "Example Corp",
+			Employees: 100,
+		},
+	}
+
+	fmt.Printf("Employee: %s (ID: %d)\n", emp.Person.Name, emp.ID)
+	fmt.Printf("Works at: %s\n", emp.Company.Name)
 	fmt.Printf("Position: %s\n", emp.Position)
-	fmt.Printf("Age: %d\n", /* access Person's Age */)
-	
-	// TODO: Demonstrate struct as interface
-	// Since Car embeds Engine, Car has all of Engine's methods
-	var engine Engine = car.Engine // Extract the embedded struct
+	fmt.Printf("Age: %d\n", emp.Person.Age)
+
+	// An embedded type's methods are promoted to the outer type.
+	var engine Engine = car.Engine
 	engine.Start()
 }

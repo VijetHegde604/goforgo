@@ -5,10 +5,11 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 	"strconv"
+	"strings"
 )
 
-// TODO: Define interfaces for this exercise
 type Stringer interface {
 	String() string
 }
@@ -21,176 +22,226 @@ type Resetter interface {
 	Reset()
 }
 
-// TODO: Define a Person struct that implements Stringer
 type Person struct {
 	Name string
 	Age  int
 }
 
 func (p Person) String() string {
-	// Return formatted string representation
+	return fmt.Sprintf("Name: %s and Age: %d", p.Name, p.Age)
 }
 
-// TODO: Define a WordCounter that implements Stringer, Counter, and Resetter
+// WordCounter implements Stringer, Counter, and Resetter.
 type WordCounter struct {
 	words int
 }
 
 func (wc *WordCounter) AddWords(text string) {
-	// Simple word counting (split by spaces)
 	if text == "" {
 		return
 	}
-	// Count words by splitting on spaces and add to wc.words
+
+	words := strings.Fields(text)
+	wc.words += len(words)
 }
 
 func (wc WordCounter) String() string {
-	// Return string representation
+	return fmt.Sprintf("Word Count: %d", wc.words)
 }
 
 func (wc WordCounter) Count() int {
-	// Return current count
+	return wc.words
 }
 
 func (wc *WordCounter) Reset() {
-	// Reset counter to zero
+	wc.words = 0
 }
 
-// TODO: Function to check if a value implements Stringer
+// checkStringer checks whether a value implements Stringer.
 func checkStringer(value interface{}) {
-	if stringer, ok := /* check if value implements Stringer */; ok {
+	if stringer, ok := value.(Stringer); ok {
 		fmt.Printf("✓ Implements Stringer: %s\n", stringer.String())
 	} else {
 		fmt.Printf("✗ Does not implement Stringer: %v\n", value)
 	}
 }
 
-// TODO: Function to check multiple interfaces
+// checkInterfaces checks whether a value implements multiple interfaces.
 func checkInterfaces(value interface{}) {
 	fmt.Printf("Checking interfaces for %T:\n", value)
-	
-	// Check Stringer
-	if _, ok := /* check Stringer */; ok {
+
+	if _, ok := value.(Stringer); ok {
 		fmt.Println("  ✓ Implements Stringer")
 	} else {
 		fmt.Println("  ✗ Does not implement Stringer")
 	}
-	
-	// Check Counter
-	if _, ok := /* check Counter */; ok {
+
+	if _, ok := value.(Counter); ok {
 		fmt.Println("  ✓ Implements Counter")
 	} else {
 		fmt.Println("  ✗ Does not implement Counter")
 	}
-	
-	// Check Resetter
-	if _, ok := /* check Resetter */; ok {
+
+	if _, ok := value.(Resetter); ok {
 		fmt.Println("  ✓ Implements Resetter")
 	} else {
 		fmt.Println("  ✗ Does not implement Resetter")
 	}
 }
 
-// TODO: Function that works with any type that can be converted to string
+// convertToString converts different types to strings.
 func convertToString(value interface{}) string {
-	// Try different conversion methods in order of preference
-	
-	// First, check if it implements Stringer
-	if stringer, ok := /* check Stringer */; ok {
+	// Prefer the Stringer interface.
+	if stringer, ok := value.(Stringer); ok {
 		return stringer.String()
 	}
-	
-	// Then check for basic types and convert them
+
+	// Handle basic types.
 	switch v := value.(type) {
 	case string:
 		return v
 	case int:
-		// Convert int to string
+		return strconv.Itoa(v)
 	case float64:
-		// Convert float64 to string with 2 decimal places
+		return strconv.FormatFloat(v, 'f', 2, 64)
 	case bool:
-		// Convert bool to string
+		return strconv.FormatBool(v)
 	default:
-		// Use fmt.Sprintf as fallback
 		return fmt.Sprintf("%v", v)
 	}
 }
 
-// TODO: Function that accepts interface and tries to call methods conditionally
+// processData conditionally calls methods based on implemented interfaces.
 func processData(data interface{}) {
 	fmt.Printf("Processing %T: ", data)
-	
-	// Always print the value
 	fmt.Printf("Value = %v", data)
-	
-	// If it's a Stringer, use its String method
-	if stringer, ok := /* check Stringer */; ok {
+
+	if stringer, ok := data.(Stringer); ok {
 		fmt.Printf(", String() = %s", stringer.String())
 	}
-	
-	// If it's a Counter, show the count
-	if counter, ok := /* check Counter */; ok {
+
+	if counter, ok := data.(Counter); ok {
 		fmt.Printf(", Count() = %d", counter.Count())
 	}
-	
+
 	fmt.Println()
 }
 
 func main() {
-	// TODO: Create test objects
-	person := // Create Person with Name: "Alice", Age: 30
-	wc := // Create WordCounter
+	// Create test objects.
+	person := Person{
+		Name: "Alice",
+		Age:  30,
+	}
+
+	wc := WordCounter{}
 	wc.AddWords("hello world from Go")
-	
+
 	plainInt := 42
 	plainString := "just a string"
-	
+
+	// --------------------------------------------------
+	// Stringer Interface Check
+	// --------------------------------------------------
+
 	fmt.Println("=== Stringer Interface Check ===")
-	// TODO: Test checkStringer with different values
-	// Test with: person, &wc, plainInt, plainString
-	
+
+	checkStringer(person)
+	checkStringer(&wc)
+	checkStringer(plainInt)
+	checkStringer(plainString)
+
+	// --------------------------------------------------
+	// Multiple Interface Check
+	// --------------------------------------------------
+
 	fmt.Println("\n=== Multiple Interface Check ===")
-	// TODO: Test checkInterfaces with different values
-	// Test with: person, &wc, plainInt
-	
+
+	checkInterfaces(person)
+	checkInterfaces(&wc)
+	checkInterfaces(plainInt)
+
+	// --------------------------------------------------
+	// String Conversion
+	// --------------------------------------------------
+
 	fmt.Println("\n=== String Conversion ===")
-	values := []interface{}{/* add: person, &wc, 123, 3.14159, true, []int{1,2,3} */}
-	
+
+	values := []interface{}{
+		person,
+		&wc,
+		123,
+		3.14159,
+		true,
+		[]int{1, 2, 3},
+	}
+
 	for _, value := range values {
 		str := convertToString(value)
-		fmt.Printf("%T -> \"%s\"\n", value, str)
+		fmt.Printf("%T -> %q\n", value, str)
 	}
-	
+
+	// --------------------------------------------------
+	// Conditional Method Calls
+	// --------------------------------------------------
+
 	fmt.Println("\n=== Conditional Method Calls ===")
-	// TODO: Test processData with different values
-	// Test with: person, &wc, plainInt, plainString
-	
+
+	processData(person)
+	processData(&wc)
+	processData(plainInt)
+	processData(plainString)
+
+	// --------------------------------------------------
+	// Interface Nil Check
+	// --------------------------------------------------
+
 	fmt.Println("\n=== Interface Nil Check ===")
+
 	var nilStringer Stringer
 	var nilPerson *Person
-	
-	// TODO: Check for nil interfaces
+
 	if nilStringer == nil {
 		fmt.Println("nilStringer is nil")
 	}
-	
-	// This is trickier - interface with nil pointer
+
+	// An interface containing a nil pointer is NOT itself nil.
 	nilStringer = nilPerson
+
 	if nilStringer == nil {
 		fmt.Println("nilStringer with nil pointer is nil")
 	} else {
-		fmt.Printf("nilStringer with nil pointer is not nil: %T\n", nilStringer)
-		// TODO: Safely call method on potentially nil interface
-		// This would panic: nilStringer.String()
+		fmt.Printf(
+			"nilStringer with nil pointer is not nil: %T\n",
+			nilStringer,
+		)
+
+		// Safely detect the typed-nil pointer.
+		value := reflect.ValueOf(nilStringer)
+
+		if value.Kind() == reflect.Ptr && value.IsNil() {
+			fmt.Println("Underlying pointer is nil, so String() will not be called")
+		} else {
+			fmt.Println(nilStringer.String())
+		}
 	}
-	
+
+	// --------------------------------------------------
+	// Counter Operations
+	// --------------------------------------------------
+
 	fmt.Println("\n=== Counter Operations ===")
-	if counter, ok := /* check if wc implements Counter */; ok {
+
+	// Type assertions work on interface values.
+	var value interface{} = wc
+
+	if counter, ok := value.(Counter); ok {
 		fmt.Printf("Initial count: %d\n", counter.Count())
+
 		wc.AddWords("more words here")
 		fmt.Printf("After adding words: %d\n", counter.Count())
-		
-		if resetter, ok := /* check if wc implements Resetter */; ok {
+
+		if resetter, ok := value.(Resetter); ok {
 			resetter.Reset()
 			fmt.Printf("After reset: %d\n", counter.Count())
 		}

@@ -6,15 +6,20 @@ package main
 
 import "fmt"
 
-// TODO: Define a Person struct with Name (string) and Age (int) fields
+// Define a Person struct with Name (string) and Age (int) fields
 type Person struct {
-	// Define fields here
+	Name string
+	Age  int
 }
 
-// TODO: Define a Book struct with Title, Author (strings) and Pages (int)
-type Book // Complete the struct definition
+// Define a Book struct with Title, Author (strings) and Pages (int)
+type Book struct {
+	Title  string
+	Author string
+	Pages  int
+}
 
-// TODO: Define an Address struct for the next example
+// Define an Address struct for the next example
 type Address struct {
 	Street string
 	City   string
@@ -22,55 +27,58 @@ type Address struct {
 	Zip    string
 }
 
-// TODO: Define a Student struct that embeds Address
+// Define a Student struct that embeds Address
 type Student struct {
-	Name    string
-	ID      int
-	// Embed Address struct here
+	Name string
+	ID   int
+	Address
 }
 
 func main() {
-	// TODO: Create a Person using struct literal with field names
-	person1 := // Create Person with Name: "Alice", Age: 30
-	
-	// TODO: Create a Person using struct literal without field names (positional)
-	person2 := // Create Person("Bob", 25)
-	
-	// TODO: Create a zero-value Person and set fields individually
+	// Create a Person using struct literal with field names
+	person1 := Person{Name: "Alice", Age: 30}
+
+	// Create a Person using struct literal without field names (positional)
+	person2 := Person{"Bob", 25}
+	fmt.Printf("Person2: Name=%s, Age=%d\n", person2.Name, person2.Age)
+	// Create a zero-value Person and set fields individually
 	var person3 Person
 	// Set Name to "Charlie" and Age to 35
-	
-	// TODO: Access struct fields
-	fmt.Printf("Person1: Name=%s, Age=%d\n", /* access fields */)
-	
-	// TODO: Create a Book
-	book := // Create Book with Title: "The Go Programming Language", Author: "Kernighan & Ritchie", Pages: 380
-	
-	// TODO: Modify a struct field
+	person3.Name = "Charlie"
+	person3.Age = 30
+
+	// Access struct fields
+	fmt.Printf("Person1: Name=%s, Age=%d\n", person1.Name, person1.Age)
+
+	// Create a Book
+	book := Book{Title: "The Go Programming Language", Author: "Kernighan & Ritchie", Pages: 380}
+
+	// Modify a struct field
 	// Increase book pages by 20
-	
-	// TODO: Create a Student with embedded Address
-	student := // Create Student with Name: "Diana", ID: 12345, and Address fields
-	
-	// TODO: Access embedded struct fields directly
-	fmt.Printf("Student lives in: %s, %s\n", /* access city and state */)
-	
-	// TODO: Access embedded struct as a whole
-	fmt.Printf("Full address: %+v\n", /* access the Address struct */)
-	
-	// TODO: Compare structs
+	book.Pages += 20
+
+	// Create a Student with embedded Address
+	student := Student{Name: "Diana", ID: 12345, Address: Address{City: "Bengaluru", State: "Karnataka"}}
+
+	// Access embedded struct fields directly
+	fmt.Printf("Student lives in: %s, %s\n", student.City, student.State)
+
+	// Access embedded struct as a whole
+	fmt.Printf("Full address: %+v\n", student.Address)
+
+	// Compare structs
 	person4 := Person{Name: "Alice", Age: 30}
-	if /* compare person1 and person4 */ {
+	if person1 == person4 {
 		fmt.Println("person1 and person4 are equal")
 	}
-	
-	// TODO: Copy a struct (creates a new copy, not a reference)
+
+	// Copy a struct (creates a new copy, not a reference)
 	personCopy := person1
 	personCopy.Age = 31
-	
+
 	fmt.Printf("Original: %+v\n", person1)
 	fmt.Printf("Copy: %+v\n", personCopy)
-	
+
 	// Print all results
 	fmt.Printf("Book: %+v\n", book)
 	fmt.Printf("Student: %+v\n", student)

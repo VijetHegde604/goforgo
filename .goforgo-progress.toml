@@ -1,5 +1,5 @@
-current_exercise = "struct_basics"
-last_updated = 2026-09-22T21:47:37.650639782+05:30
+current_exercise = "error_basics"
+last_updated = 2026-09-24T22:59:27.877212902+05:30
 
 [completed_exercises]
   array_basics = true
@@ -20,6 +20,10 @@ last_updated = 2026-09-22T21:47:37.650639782+05:30
   hello = true
   if_statements = true
   imports = true
+  interface_assertion = true
+  interface_basics = true
+  interface_composition = true
+  interface_empty = true
   main_function = true
   map_advanced = true
   map_basics = true
@@ -47,6 +51,10 @@ last_updated = 2026-09-22T21:47:37.650639782+05:30
   slice_copy = true
   slice_sorting_custom = true
   slice_tricks = true
+  struct_basics = true
+  struct_embedding = true
+  struct_methods = true
+  struct_tags = true
   switch_statements = true
   type_conversion = true
   type_inference = true

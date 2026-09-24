@@ -1,7 +1,3 @@
-// interface_basics.go
-// Learn the fundamentals of interfaces in Go
-// Interfaces define behavior through method signatures
-
 package main
 
 import (
@@ -9,110 +5,137 @@ import (
 	"math"
 )
 
-// TODO: Define a Shape interface with Area() method
+// Shape defines anything that can calculate an area.
 type Shape interface {
-	// Define Area method signature
+	Area() float64
 }
 
-// TODO: Define a Rectangle struct
+// Rectangle implements Shape.
 type Rectangle struct {
 	Width  float64
 	Height float64
 }
 
-// TODO: Implement Shape interface for Rectangle
 func (r Rectangle) Area() float64 {
-	// Calculate rectangle area
+	return r.Width * r.Height
 }
 
-// TODO: Define a Circle struct  
+// Circle implements Shape.
 type Circle struct {
 	Radius float64
 }
 
-// TODO: Implement Shape interface for Circle
 func (c Circle) Area() float64 {
-	// Calculate circle area
+	return math.Pi * c.Radius * c.Radius
 }
 
-// TODO: Define a Writer interface (similar to io.Writer)
+// Writer defines anything that can write data.
 type Writer interface {
-	// Define Write method that takes []byte and returns (int, error)
+	Write(data []byte) (int, error)
 }
 
-// TODO: Define a FileWriter struct that implements Writer
+// FileWriter implements Writer.
 type FileWriter struct {
 	Filename string
 }
 
 func (fw FileWriter) Write(data []byte) (int, error) {
-	// Simulate writing to file
 	fmt.Printf("Writing %d bytes to file: %s\n", len(data), fw.Filename)
 	fmt.Printf("Content: %s\n", string(data))
 	return len(data), nil
 }
 
-// TODO: Define a ConsoleWriter struct that implements Writer
+// ConsoleWriter implements Writer.
 type ConsoleWriter struct{}
 
 func (cw ConsoleWriter) Write(data []byte) (int, error) {
-	// Write to console
 	fmt.Printf("Console: %s", string(data))
 	return len(data), nil
 }
 
-// TODO: Function that accepts any Shape
+// Works with any type that implements Shape.
 func printShapeInfo(s Shape) {
-	// Print the area of any shape
-	fmt.Printf("Shape area: %.2f\n", /* call Area method */)
+	fmt.Printf("Shape area: %.2f\n", s.Area())
 }
 
-// TODO: Function that accepts any Writer
+// Works with any type that implements Writer.
 func writeMessage(w Writer, message string) {
-	// Use the writer to write a message
-	// Convert message to []byte and call Write
+	_, err := w.Write([]byte(message))
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 }
 
 func main() {
-	// TODO: Create shapes and use them through the interface
-	rect := // Create Rectangle with Width: 5, Height: 3
-	circle := // Create Circle with Radius: 4
-	
-	// TODO: Call printShapeInfo with different shapes
+	// -------------------------
+	// Shapes
+	// -------------------------
+
+	rect := Rectangle{
+		Width:  5,
+		Height: 3,
+	}
+
+	circle := Circle{
+		Radius: 4,
+	}
+
 	fmt.Println("Using shapes through interface:")
-	// Call printShapeInfo with rect
-	// Call printShapeInfo with circle
-	
-	// TODO: Store shapes in a slice of Shape interface
-	shapes := []Shape{/* add rect and circle */}
-	
+
+	printShapeInfo(rect)
+	printShapeInfo(circle)
+
+	// A slice containing different types
+	// because both implement Shape.
+	shapes := []Shape{
+		rect,
+		circle,
+	}
+
 	var totalArea float64
+
 	for _, shape := range shapes {
-		// Add each shape's area to totalArea
+		totalArea += shape.Area()
 	}
-	fmt.Printf("Total area of all shapes: %.2f\n", totalArea)
-	
-	// TODO: Use Writer interface with different implementations
-	fileWriter := // Create FileWriter with Filename: "output.txt"
-	consoleWriter := // Create ConsoleWriter
-	
+
+	fmt.Printf("Total area: %.2f\n", totalArea)
+
+	// -------------------------
+	// Writers
+	// -------------------------
+
+	fileWriter := FileWriter{
+		Filename: "output.txt",
+	}
+
+	consoleWriter := ConsoleWriter{}
+
 	fmt.Println("\nUsing writers through interface:")
-	// Write "Hello, File!" using fileWriter
-	// Write "Hello, Console!" using consoleWriter
-	
-	// TODO: Store writers in a slice and use them
-	writers := []Writer{/* add fileWriter and consoleWriter */}
-	
-	for i, writer := range writers {
-		message := fmt.Sprintf("Message %d from writer\n", i+1)
-		// Write message using current writer
+
+	writeMessage(fileWriter, "Hello, File!\n")
+	writeMessage(consoleWriter, "Hello, Console!\n")
+
+	// A slice containing different types
+	// because both implement Writer.
+	writers := []Writer{
+		fileWriter,
+		consoleWriter,
 	}
-	
-	// TODO: Demonstrate interface assignment
+
+	for i, writer := range writers {
+		message := fmt.Sprintf("Message %d\n", i+1)
+		writeMessage(writer, message)
+	}
+
+	// -------------------------
+	// Interface assignment
+	// -------------------------
+
 	var shape Shape
-	shape = rect // Rectangle implements Shape
-	fmt.Printf("Shape (Rectangle) area: %.2f\n", shape.Area())
-	
-	shape = circle // Circle also implements Shape  
-	fmt.Printf("Shape (Circle) area: %.2f\n", shape.Area())
+
+	shape = rect
+	fmt.Printf("\nRectangle area: %.2f\n", shape.Area())
+
+	shape = circle
+	fmt.Printf("Circle area: %.2f\n", shape.Area())
 }
