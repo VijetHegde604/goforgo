@@ -1,5 +1,5 @@
-current_exercise = "error_basics"
-last_updated = 2026-09-24T22:59:27.877212902+05:30
+current_exercise = "goroutines_basics"
+last_updated = 2026-09-27T12:26:10.080992106+05:30
 
 [completed_exercises]
   array_basics = true
@@ -11,6 +11,9 @@ last_updated = 2026-09-24T22:59:27.877212902+05:30
   comments = true
   constants = true
   defer_statements = true
+  error_basics = true
+  error_custom = true
+  error_wrapping = true
   for_loops = true
   formatting = true
   function_definition = true
