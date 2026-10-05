@@ -1,5 +1,5 @@
-current_exercise = "goroutines_basics"
-last_updated = 2026-09-27T12:26:10.080992106+05:30
+current_exercise = "context_usage"
+last_updated = 2026-10-05T14:25:54.560157497+05:30
 
 [completed_exercises]
   array_basics = true
@@ -7,6 +7,7 @@ last_updated = 2026-09-27T12:26:10.080992106+05:30
   array_searching = true
   array_sorting = true
   break_continue = true
+  channels_basics = true
   closures = true
   comments = true
   constants = true
@@ -19,6 +20,7 @@ last_updated = 2026-09-27T12:26:10.080992106+05:30
   function_definition = true
   function_types = true
   go_types = true
+  goroutines_basics = true
   goto_labels = true
   hello = true
   if_statements = true
@@ -59,6 +61,7 @@ last_updated = 2026-09-27T12:26:10.080992106+05:30
   struct_methods = true
   struct_tags = true
   switch_statements = true
+  sync_primitives = true
   type_conversion = true
   type_inference = true
   type_switches = true

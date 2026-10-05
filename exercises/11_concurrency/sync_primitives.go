@@ -9,21 +9,28 @@ import (
 	"time"
 )
 
-// TODO: Shared counter with mutex protection
+// Shared counter with mutex protection
 type SafeCounter struct {
 	mu    sync.Mutex
 	value int
 }
 
 func (c *SafeCounter) Increment() {
-	// TODO: Lock, increment, unlock
+	// Lock, increment, unlock
+	c.mu.Lock()
+	c.value++
+	c.mu.Unlock()
 }
 
 func (c *SafeCounter) Value() int {
-	// TODO: Lock, read value, unlock, return
+	// Lock, read value, unlock, return
+	c.mu.Lock()
+	fmt.Println(c.value)
+	c.mu.Unlock()
+	return c.value
 }
 
-// TODO: Cache with RWMutex
+// Cache with RWMutex
 type Cache struct {
 	mu   sync.RWMutex
 	data map[string]string
@@ -34,14 +41,20 @@ func NewCache() *Cache {
 }
 
 func (c *Cache) Get(key string) (string, bool) {
-	// TODO: Use RLock for reading
+	// Use RLock for reading
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	return c.data[key], true
 }
 
 func (c *Cache) Set(key, value string) {
-	// TODO: Use Lock for writing
+	// Use Lock for writing
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.data[key] = value
 }
 
-// TODO: Expensive initialization with sync.Once
+// Expensive initialization with sync.Once
 var (
 	instance *ExpensiveResource
 	once     sync.Once
@@ -52,7 +65,8 @@ type ExpensiveResource struct {
 }
 
 func GetInstance() *ExpensiveResource {
-	// TODO: Use once.Do to initialize instance only once
+	//  Use once.Do to initialize instance only once
+	once.Do(createInstance)
 	return instance
 }
 
@@ -64,14 +78,14 @@ func createInstance() {
 
 func main() {
 	fmt.Println("=== Mutex Example ===")
-	
+
 	counter := &SafeCounter{}
 	var wg sync.WaitGroup
-	
-	// TODO: Start multiple goroutines incrementing counter
+
+	// Start multiple goroutines incrementing counter
 	numGoroutines := 10
 	incrementsPerGoroutine := 100
-	
+
 	wg.Add(numGoroutines)
 	for i := 0; i < numGoroutines; i++ {
 		go func() {
@@ -81,22 +95,22 @@ func main() {
 			}
 		}()
 	}
-	
+
 	wg.Wait()
 	expected := numGoroutines * incrementsPerGoroutine
 	actual := counter.Value()
 	fmt.Printf("Expected: %d, Actual: %d\\n", expected, actual)
-	
+
 	fmt.Println("\\n=== RWMutex Example ===")
-	
+
 	cache := NewCache()
-	
-	// TODO: Start readers and writers
+
+	// Start readers and writers
 	numReaders := 5
 	numWriters := 2
-	
+
 	wg.Add(numReaders + numWriters)
-	
+
 	// Start writers
 	for i := 0; i < numWriters; i++ {
 		go func(id int) {
@@ -110,7 +124,7 @@ func main() {
 			}
 		}(i)
 	}
-	
+
 	// Start readers
 	for i := 0; i < numReaders; i++ {
 		go func(id int) {
@@ -126,15 +140,15 @@ func main() {
 			}
 		}(i)
 	}
-	
+
 	wg.Wait()
-	
+
 	fmt.Println("\\n=== sync.Once Example ===")
-	
-	// TODO: Multiple goroutines trying to get instance
+
+	// Multiple goroutines trying to get instance
 	numGetters := 5
 	wg.Add(numGetters)
-	
+
 	for i := 0; i < numGetters; i++ {
 		go func(id int) {
 			defer wg.Done()
@@ -142,6 +156,6 @@ func main() {
 			fmt.Printf("Goroutine %d got instance: %s\\n", id, instance.data)
 		}(i)
 	}
-	
+
 	wg.Wait()
 }
